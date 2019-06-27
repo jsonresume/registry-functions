@@ -19,6 +19,7 @@
     "firebase-admin": "~7.0.0",
     "firebase-functions": "^2.3.0",
     "lodash": "^4.17.11",
+    "resume-schema": "0.0.17",
     "superagent": "^5.1.0"
   },
   "devDependencies": {
