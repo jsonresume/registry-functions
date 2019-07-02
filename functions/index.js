@@ -6,6 +6,7 @@ const cors = require("cors");
 const resumeSchema = require("resume-schema");
 const fs = require("fs");
 const app = express();
+app.use(cors({ origin: true }));
 // Import Admin SDK
 var admin = require("firebase-admin");
 
@@ -20,13 +21,48 @@ if (process.env.NODE_ENV === "production") {
 }
 
 var db = admin.database();
-app.use(cors({ origin: true }));
 
 const makeTemplate = message => {
   const template = fs.readFileSync(__dirname + "/template.html", "utf8");
   return template.replace("{MESSAGE}", message);
 };
+const getTheme = theme => {
+  try {
+    return require(__dirname + "/node_modules/jsonresume-theme-" + theme);
+  } catch (e) {
+    return {
+      error:
+        "Theme not supported please visit -> https://github.com/jsonresume/theme-functions/issues/12"
+    };
+  }
+};
+app.get("/theme/:theme", (req, res) => {
+  const resumeJson = JSON.parse(fs.readFileSync(__dirname + "/resume.json"));
+  const themeRenderer = getTheme(req.params.theme);
+  if (themeRenderer.error) {
+    return res.send(themeRenderer.error);
+  }
+  const resumeHTML = themeRenderer.render(resumeJson, {});
+  res.send(resumeHTML);
+});
 
+app.post("/theme/:theme", (req, res) => {
+  console.log("Rendering theme");
+  const resumeJson = req.body.resume;
+  var start = new Date();
+  const themeRenderer = getTheme(req.params.theme);
+  var end = new Date() - start;
+  console.info("Execution time getTheme: %dms", end);
+  if (themeRenderer.error) {
+    return res.send(themeRenderer.error);
+  }
+  start = new Date();
+  const resumeHTML = themeRenderer.render(resumeJson, {});
+  end = new Date() - start;
+  console.info("Execution time render: %dms", end);
+  console.log("finished");
+  res.send(resumeHTML);
+});
 app.get("/:username", async (req, res) => {
   const username = req.params.username;
   if (
@@ -108,14 +144,16 @@ app.get("/:username", async (req, res) => {
         req.query.theme ||
         (resumeRes.data.meta && resumeRes.data.meta.theme) ||
         "flat";
-      const resumeHTMLRes = await axios.post(
-        `https://themes.jsonresume.org/theme/${theme}`,
-        { resume: resumeRes.data }
-      );
-      if (!resumeHTMLRes.data) {
-        res.send("There was an error generatoring your resume");
+
+      const themeRenderer = getTheme(theme);
+      if (themeRenderer.error) {
+        return res.send(themeRenderer.error);
       }
-      res.send(resumeHTMLRes.data);
+      const resumeHTML = themeRenderer.render(resumeRes.data, {});
+      // if (!resumeHTMLRes.data) {
+      //   res.send("There was an error generatoring your resume");
+      // }
+      res.send(resumeHTML);
     });
   });
 });
