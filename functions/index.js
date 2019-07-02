@@ -78,11 +78,21 @@ app.get("/:username", async (req, res) => {
       `https://gist.githubusercontent.com/${username}/${gistId}/raw?cachebust=` +
       new Date().getTime();
     console.log(fullResumeGistUrl);
-    const resumeRes = await axios({
-      method: "GET",
-      headers: { "content-type": "application/json" },
-      url: fullResumeGistUrl
-    });
+    let resumeRes = {};
+    try {
+      resumeRes = await axios({
+        method: "GET",
+        headers: { "content-type": "application/json" },
+        url: fullResumeGistUrl
+      });
+    } catch (e) {
+      // If gist url is invalid, flush the gistid in cache
+      usersRef.set(null, () => {});
+      return res.send(
+        makeTemplate("The gist couldnt load, we flushed the cache so try again")
+      );
+    }
+
     if (!resumeRes.data) {
       return res.send(makeTemplate("Something went wrong fetching resume"));
     }
@@ -95,7 +105,9 @@ app.get("/:username", async (req, res) => {
         );
       }
       const theme =
-        (resumeRes.data.meta && resumeRes.data.meta.theme) || "flat";
+        req.query.theme ||
+        (resumeRes.data.meta && resumeRes.data.meta.theme) ||
+        "flat";
       const resumeHTMLRes = await axios.post(
         `https://themes.jsonresume.org/theme/${theme}`,
         { resume: resumeRes.data }
