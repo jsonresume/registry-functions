@@ -16,19 +16,19 @@
     "axios": "^0.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "firebase-admin": "~8.3.0",
-    "firebase-functions": "^3.2.0",
+    "firebase-admin": "~8.7.0",
+    "firebase-functions": "^3.3.0",
     "jsonresume-theme-ace": "^1.1.0",
     "jsonresume-theme-class": "^0.1.2",
     "jsonresume-theme-classy": "^1.0.9",
     "jsonresume-theme-cora": "^0.1.1",
     "jsonresume-theme-crispy-potato": "^0.1.7",
     "jsonresume-theme-dave": "^1.0.1",
-    "jsonresume-theme-elegant": "^1.12.1",
+    "jsonresume-theme-elegant": "^1.13.1",
     "jsonresume-theme-elite": "^1.1.2",
     "jsonresume-theme-eloquent": "^4.1.0",
     "jsonresume-theme-flat": "^0.3.7",
-    "jsonresume-theme-kards": "^1.0.1",
+    "jsonresume-theme-kards": "^1.0.2",
     "jsonresume-theme-keloran": "^1.0.2",
     "jsonresume-theme-kendall": "^0.1.19",
     "jsonresume-theme-kwan": "0.0.2",
@@ -38,7 +38,7 @@
     "jsonresume-theme-modern": "0.0.18",
     "jsonresume-theme-onepage": "0.0.3",
     "jsonresume-theme-onepageresume": "0.0.2",
-    "jsonresume-theme-orbit": "^1.0.2",
+    "jsonresume-theme-orbit": "^1.0.3",
     "jsonresume-theme-paper": "^0.3.5",
     "jsonresume-theme-papirus": "0.0.5",
     "jsonresume-theme-pumpkin": "^0.1.1",
@@ -55,9 +55,9 @@
     "superagent": "^5.1.0"
   },
   "devDependencies": {
-    "eslint": "^6.2.0",
+    "eslint": "^6.6.0",
     "eslint-plugin-promise": "^4.2.1",
-    "firebase-functions-test": "^0.1.6"
+    "firebase-functions-test": "^0.1.7"
   },
   "private": true
 }
