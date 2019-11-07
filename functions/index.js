@@ -10,6 +10,13 @@ app.use(cors({ origin: true }));
 // Import Admin SDK
 var admin = require("firebase-admin");
 
+const packages = JSON.parse(fs.readFileSync(__dirname + "/package.json"))
+  .dependencies;
+
+const themes = _.filter(_.keys(packages), p => {
+  return p.indexOf("theme") !== -1;
+});
+
 if (process.env.NODE_ENV === "production") {
   admin.initializeApp(functions.config().firebase);
 } else {
@@ -21,6 +28,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 var db = admin.database();
+const dbs = admin.firestore();
 
 const makeTemplate = message => {
   const template = fs.readFileSync(__dirname + "/template.html", "utf8");
@@ -36,21 +44,46 @@ const getTheme = theme => {
     };
   }
 };
+app.get("/themes", (req, res) => {
+  res.send(themes);
+});
 app.get("/theme/:theme", (req, res) => {
   const resumeJson = JSON.parse(fs.readFileSync(__dirname + "/resume.json"));
-  const themeRenderer = getTheme(req.params.theme);
+  const theme = req.params.theme.toLowerCase();
+  const themeRenderer = getTheme(theme);
   if (themeRenderer.error) {
     return res.send(themeRenderer.error);
   }
   const resumeHTML = themeRenderer.render(resumeJson, {});
   res.send(resumeHTML);
 });
+app.get("/", (req, res) => {
+  res.send("Visit jsonresume.org to learn more");
+});
+app.get("/all", (req, res) => {
+  const resumesRef = dbs.collection("resumes");
 
+  resumesRef
+    .get()
+    .then(snapshot => {
+      const resumes = [];
+      snapshot.forEach(doc => {
+        resumes.push(doc.id);
+        console.log(doc.id, "=>", doc.data());
+      });
+      return res.send(resumes);
+    })
+    .catch(err => {
+      console.log("Error getting documents", err);
+      return [];
+    });
+});
 app.post("/theme/:theme", (req, res) => {
   console.log("Rendering theme");
   const resumeJson = req.body.resume;
   var start = new Date();
-  const themeRenderer = getTheme(req.params.theme);
+  const theme = req.params.theme.toLowerCase();
+  const themeRenderer = getTheme(theme);
   var end = new Date() - start;
   console.info("Execution time getTheme: %dms", end);
   if (themeRenderer.error) {
@@ -140,11 +173,13 @@ app.get("/:username", async (req, res) => {
           makeTemplate("Resume json invalid - " + JSON.stringify(err))
         );
       }
-      const theme =
+      const resumesRef = dbs.collection("resumes");
+      resumesRef.doc(username).set(resumeRes.data);
+      let theme =
         req.query.theme ||
         (resumeRes.data.meta && resumeRes.data.meta.theme) ||
         "flat";
-
+      theme = theme.toLowerCase();
       const themeRenderer = getTheme(theme);
       if (themeRenderer.error) {
         return res.send(themeRenderer.error);
