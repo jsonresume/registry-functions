@@ -31,7 +31,9 @@ jobs:
       run: |
         echo Add other actions to build,
         echo test, and deploy your project.
+        npm i
         cd functions
+        npm i
 
     - name: Deploy to Firebase
       uses: w9jds/firebase-action@master
