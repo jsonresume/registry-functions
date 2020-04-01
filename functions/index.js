@@ -88,7 +88,7 @@ app.post("/theme/:theme", (req, res) => {
   var end = new Date() - start;
   console.info("Execution time getTheme: %dms", end);
   if (themeRenderer.error) {
-    return res.send(themeRenderer.error);
+    return res.send(themeRenderer.error + " - " + themeRenderer.e);
   }
   start = new Date();
   const resumeHTML = themeRenderer.render(resumeJson, {});
@@ -183,7 +183,7 @@ app.get("/:username", async (req, res) => {
       theme = theme.toLowerCase();
       const themeRenderer = getTheme(theme);
       if (themeRenderer.error) {
-        return res.send(themeRenderer.error);
+        return res.send(themeRenderer.error + " - " + themeRenderer.e);
       }
       const resumeHTML = themeRenderer.render(resumeRes.data, {});
       // if (!resumeHTMLRes.data) {
