@@ -3,6 +3,7 @@
     "rules": "database.rules.json"
   },
   "functions": {
+    "predeploy": ["echo no predeploy"]
   },
   "hosting": {
     "public": "public",
