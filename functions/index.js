@@ -41,7 +41,7 @@ const getTheme = theme => {
     return {
       e: e.toString(),
       error:
-        "Theme not supported please visit -> https://github.com/jsonresume/registry-functions/issues/7"
+        "Theme is not supported please visit -> https://github.com/jsonresume/registry-functions/issues/7"
     };
   }
 };
