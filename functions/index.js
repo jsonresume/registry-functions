@@ -39,11 +39,13 @@ const getTheme = theme => {
     return require(__dirname + "/node_modules/jsonresume-theme-" + theme);
   } catch (e) {
     return {
+      e: e.toString(),
       error:
         "Theme not supported please visit -> https://github.com/jsonresume/theme-functions/issues/12"
     };
   }
 };
+
 app.get("/themes", (req, res) => {
   res.send(themes);
 });
@@ -52,7 +54,7 @@ app.get("/theme/:theme", (req, res) => {
   const theme = req.params.theme.toLowerCase();
   const themeRenderer = getTheme(theme);
   if (themeRenderer.error) {
-    return res.send(themeRenderer.error);
+    return res.send(themeRenderer.error + " - " + themeRenderer.e);
   }
   const resumeHTML = themeRenderer.render(resumeJson, {});
   res.send(resumeHTML);
@@ -62,7 +64,6 @@ app.get("/", (req, res) => {
 });
 app.get("/all", (req, res) => {
   const resumesRef = dbs.collection("resumes");
-
   resumesRef
     .get()
     .then(snapshot => {
