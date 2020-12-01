@@ -171,7 +171,7 @@ app.get("/:username", async (req, res) => {
       if (err) {
         console.log(err);
         return res.send(
-          makeTemplate("Resume json invalid - " + JSON.stringify(err))
+          makeTemplate("Resume json invalid - " + JSON.stringify(err) + " - Please visit https://github.com/jsonresume/registry-functions/issues/27")
         );
       }
       const resumesRef = dbs.collection("resumes");
