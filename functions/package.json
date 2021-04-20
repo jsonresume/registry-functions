@@ -63,7 +63,7 @@
     "jsonresume-theme-techlead": "^1.0.1",
     "jsonresume-theme-verbum": "0.0.5",
     "jsonresume-theme-wraypro": "0.0.5",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "resume-schema": "1.0.0",
     "superagent": "^5.2.2"
   },
