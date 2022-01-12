@@ -17,15 +17,7 @@ const themes = _.filter(_.keys(packages), p => {
   return p.indexOf("theme") !== -1;
 });
 
-if (process.env.NODE_ENV === "production") {
-  admin.initializeApp(functions.config().firebase);
-} else {
-  var serviceAccount = require("../creds.json");
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://jsonresume-registry.firebaseio.com"
-  });
-}
+admin.initializeApp(functions.config().firebase);
 
 var db = admin.database();
 const dbs = admin.firestore();
