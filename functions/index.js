@@ -13,7 +13,7 @@ var admin = require("firebase-admin");
 const packages = JSON.parse(fs.readFileSync(__dirname + "/package.json"))
   .dependencies;
 
-const themes = _.filter(_.keys(packages), p => {
+const themes = _.filter(_.keys(packages), (p) => {
   return p.indexOf("theme") !== -1;
 });
 
@@ -22,18 +22,18 @@ admin.initializeApp(functions.config().firebase);
 var db = admin.database();
 const dbs = admin.firestore();
 
-const makeTemplate = message => {
+const makeTemplate = (message) => {
   const template = fs.readFileSync(__dirname + "/template.html", "utf8");
   return template.replace("{MESSAGE}", message);
 };
-const getTheme = theme => {
+const getTheme = (theme) => {
   try {
     return require(__dirname + "/node_modules/jsonresume-theme-" + theme);
   } catch (e) {
     return {
       e: e.toString(),
       error:
-        "Theme is not supported please visit -> https://github.com/jsonresume/registry-functions/issues/7"
+        "Theme is not supported please visit -> https://github.com/jsonresume/registry-functions/issues/7",
     };
   }
 };
@@ -58,15 +58,15 @@ app.get("/all", (req, res) => {
   const resumesRef = dbs.collection("resumes");
   resumesRef
     .get()
-    .then(snapshot => {
+    .then((snapshot) => {
       const resumes = [];
-      snapshot.forEach(doc => {
+      snapshot.forEach((doc) => {
         resumes.push(doc.id);
         console.log(doc.id, "=>", doc.data());
       });
       return res.send(resumes);
     })
-    .catch(err => {
+    .catch((err) => {
       console.log("Error getting documents", err);
       return [];
     });
@@ -89,6 +89,70 @@ app.post("/theme/:theme", (req, res) => {
   console.log("finished");
   res.send(resumeHTML);
 });
+
+app.get("/repo/:username", async (req, res) => {
+  const username = req.params.username;
+  if (
+    [
+      "favicon.ico",
+      "competition",
+      "stats",
+      "apple-touch-icon.png",
+      "apple-touch-icon-precomposed.png",
+      "robots.txt",
+    ].indexOf(username) !== -1
+  ) {
+    return res.send(null);
+  }
+
+  try {
+    resumeRes = await axios({
+      method: "GET",
+      headers: { "content-type": "application/json" },
+      url: `https://github.com/${username}/resume/raw/master/resume.json`,
+    });
+  } catch (e) {
+    return res.send(
+      makeTemplate(
+        "An error occurred, please check that https://github.com/${username}/resume/raw/master/resume.json loads for you. (Your repo name must be 'resume')"
+      )
+    );
+  }
+  if (!resumeRes.data) {
+    return res.send(
+      makeTemplate(
+        "An error occurred, please check that https://github.com/${username}/resume/raw/master/resume.json loads for you. (Your repo name must be 'resume')"
+      )
+    );
+  }
+  resumeSchema.validate(resumeRes.data, async (err, report) => {
+    console.log("validation finished");
+    if (err) {
+      console.log(err);
+      return res.send(
+        makeTemplate(
+          "Resume json invalid - " +
+            JSON.stringify(err) +
+            " - Please visit https://github.com/jsonresume/registry-functions/issues/27"
+        )
+      );
+    }
+    const resumesRef = dbs.collection("resumes");
+    resumesRef.doc(username).set(resumeRes.data);
+    let theme =
+      req.query.theme ||
+      (resumeRes.data.meta && resumeRes.data.meta.theme) ||
+      "actual";
+    theme = theme.toLowerCase();
+    const themeRenderer = getTheme(theme);
+    if (themeRenderer.error) {
+      return res.send(themeRenderer.error + " - " + themeRenderer.e);
+    }
+    const resumeHTML = themeRenderer.render(resumeRes.data, {});
+    res.send(resumeHTML);
+  });
+});
+
 app.get("/:username", async (req, res) => {
   const username = req.params.username;
   if (
@@ -98,14 +162,15 @@ app.get("/:username", async (req, res) => {
       "stats",
       "apple-touch-icon.png",
       "apple-touch-icon-precomposed.png",
-      "robots.txt"
+      "robots.txt",
     ].indexOf(username) !== -1
   ) {
     return res.send(null);
   }
+
   var ref = db.ref();
   var usersRef = ref.child("gists/" + username);
-  usersRef.on("value", async dataSnapshot => {
+  usersRef.on("value", async (dataSnapshot) => {
     console.log("=======");
     console.log(dataSnapshot.val());
     let gistId;
@@ -123,7 +188,7 @@ app.get("/:username", async (req, res) => {
       if (!gistData.data) {
         return res.send(makeTemplate("This is not a valid Github username"));
       }
-      const resumeUrl = _.find(gistData.data, f => {
+      const resumeUrl = _.find(gistData.data, (f) => {
         return f.files["resume.json"];
       });
       if (!resumeUrl) {
@@ -145,7 +210,7 @@ app.get("/:username", async (req, res) => {
       resumeRes = await axios({
         method: "GET",
         headers: { "content-type": "application/json" },
-        url: fullResumeGistUrl
+        url: fullResumeGistUrl,
       });
     } catch (e) {
       // If gist url is invalid, flush the gistid in cache
@@ -163,7 +228,11 @@ app.get("/:username", async (req, res) => {
       if (err) {
         console.log(err);
         return res.send(
-          makeTemplate("Resume json invalid - " + JSON.stringify(err) + " - Please visit https://github.com/jsonresume/registry-functions/issues/27")
+          makeTemplate(
+            "Resume json invalid - " +
+              JSON.stringify(err) +
+              " - Please visit https://github.com/jsonresume/registry-functions/issues/27"
+          )
         );
       }
       const resumesRef = dbs.collection("resumes");
