@@ -24,9 +24,8 @@ jobs:
     - name: Attempting to install npm packages
       run: |
         echo Installing
-        npm i
         cd functions
-        npm i
+        npm i -g yarn && yarn install
 
     - name: Deploy to Firebase
       uses: w9jds/firebase-action@master
