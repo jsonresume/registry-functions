@@ -109,7 +109,7 @@ app.get("/repo/:username", async (req, res) => {
     resumeRes = await axios({
       method: "GET",
       headers: { "content-type": "application/json" },
-      url: `https://github.com/${username}/resume/raw/master/resume.json`,
+      url: `https://raw.githubusercontent.com/${username}/resume/master/resume.json`,
     });
   } catch (e) {
     return res.send(
