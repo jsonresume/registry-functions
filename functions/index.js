@@ -90,6 +90,7 @@ app.post("/theme/:theme", (req, res) => {
   res.send(resumeHTML);
 });
 
+// THIS IS A WIP TO SUPPORT PUTTING A resume.json in a `resume` repo
 app.get("/repo/:username", async (req, res) => {
   const username = req.params.username;
   if (
@@ -254,5 +255,110 @@ app.get("/:username", async (req, res) => {
     });
   });
 });
+
+app.get("/:username.qr.svg", async (req, res) => {
+  const username = req.params.username;
+  if (
+    [
+      "favicon.ico",
+      "competition",
+      "stats",
+      "apple-touch-icon.png",
+      "apple-touch-icon-precomposed.png",
+      "robots.txt",
+    ].indexOf(username) !== -1
+  ) {
+    return res.send(null);
+  }
+
+  var ref = db.ref();
+  var usersRef = ref.child("gists/" + username);
+  usersRef.on("value", async (dataSnapshot) => {
+    console.log("=======");
+    console.log(dataSnapshot.val());
+    let gistId;
+    if (!dataSnapshot.val() || !dataSnapshot.val().gistId) {
+      console.log("Fetching gistId");
+      console.log(`https://api.github.com/users/${req.params.username}/gists`);
+      let gistData = {};
+      try {
+        gistData = await axios.get(
+          `https://api.github.com/users/${req.params.username}/gists`
+        );
+      } catch (e) {
+        return res.send(makeTemplate("This is not a valid Github username"));
+      }
+      if (!gistData.data) {
+        return res.send(makeTemplate("This is not a valid Github username"));
+      }
+      const resumeUrl = _.find(gistData.data, (f) => {
+        return f.files["resume.json"];
+      });
+      if (!resumeUrl) {
+        return res.send(makeTemplate("You have no gists named resume.json"));
+      }
+      gistId = resumeUrl.id;
+    } else {
+      console.log("Using cached gistId");
+      gistId = dataSnapshot.val().gistId;
+    }
+
+    usersRef.set({ gistId: gistId }, () => {});
+    const fullResumeGistUrl =
+      `https://gist.githubusercontent.com/${username}/${gistId}/raw?cachebust=` +
+      new Date().getTime();
+    console.log(fullResumeGistUrl);
+    let resumeRes = {};
+    try {
+      resumeRes = await axios({
+        method: "GET",
+        headers: { "content-type": "application/json" },
+        url: fullResumeGistUrl,
+      });
+    } catch (e) {
+      // If gist url is invalid, flush the gistid in cache
+      usersRef.set(null, () => {});
+      return res.send(
+        makeTemplate("The gist couldnt load, we flushed the cache so try again")
+      );
+    }
+
+    if (!resumeRes.data) {
+      return res.send(makeTemplate("Something went wrong fetching resume"));
+    }
+    resumeSchema.validate(resumeRes.data, async (err, report) => {
+      console.log("validation finished");
+      if (err) {
+        console.log(err);
+        return res.send(
+          makeTemplate(
+            "Resume json invalid - " +
+              JSON.stringify(err) +
+              " - Please visit https://github.com/jsonresume/registry-functions/issues/27"
+          )
+        );
+      }
+      const resumesRef = dbs.collection("resumes");
+      resumesRef.doc(username).set(resumeRes.data);
+      res.send('qr goes here');
+      let theme =
+        req.query.theme ||
+        (resumeRes.data.meta && resumeRes.data.meta.theme) ||
+        "flat";
+      theme = theme.toLowerCase();
+      const themeRenderer = getTheme(theme);
+      if (themeRenderer.error) {
+        return res.send(themeRenderer.error + " - " + themeRenderer.e);
+      }
+      const resumeHTML = themeRenderer.render(resumeRes.data, {});
+      // if (!resumeHTMLRes.data) {
+      //   res.send("There was an error generatoring your resume");
+      // }
+      res.send(resumeHTML);
+    });
+  });
+});
+
+
 app.listen(3000);
 exports.registry = functions.https.onRequest(app);
