@@ -256,7 +256,7 @@ app.get("/:username", async (req, res) => {
   });
 });
 
-app.get("/:username.qr.svg", async (req, res) => {
+app.get("/qr/:username", async (req, res) => {
   const username = req.params.username;
   if (
     [
