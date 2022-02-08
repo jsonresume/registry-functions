@@ -5,6 +5,7 @@ const express = require("express");
 const cors = require("cors");
 const resumeSchema = require("resume-schema");
 const fs = require("fs");
+const qr = require("qr-image");
 const app = express();
 app.use(cors({ origin: true }));
 // Import Admin SDK
