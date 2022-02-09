@@ -156,7 +156,7 @@ app.get("/repo/:username", async (req, res) => {
 });
 
 app.get("/:username.:ext", async (req, res) => {
-  const username = req.params.username.substr(0, req.params.username.length - 1);
+  const username = req.params.username.split('.')[0]
   const parsedFormat = req.params.ext.split('.');
   console.log('parsed', req.params.ext, parsedFormat);
   console.log('shit', req.params.ext, parsedFormat);
