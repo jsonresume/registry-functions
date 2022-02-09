@@ -257,11 +257,16 @@ app.get("/:username", async (req, res) => {
   });
 });
 
-app.get("/qr/:username", async (req, res) => {
+app.get("/:username.:format", async (req, res) => {
   const username = req.params.username;
-  var code = qr.image('https://registry.jsonresume.org/' + username, { type: 'png', ec_level: 'M', size: 100, margin: 0, parse_url: true });
-  res.setHeader('Content-type', 'image/png');
-  code.pipe(res);
+  const parsedFormat = req.params.format.split('.');
+  if (parsedFormat[0] === 'qr' && parsedFormat[1] === 'png') {
+    var code = qr.image('https://registry.jsonresume.org/' + username, { type: 'png', ec_level: 'M', size: 100, margin: 0, parse_url: true });
+    res.setHeader('Content-type', 'image/png');
+    code.pipe(res);
+  } else {
+    res.send('Must be in the format of registry.jsonresume.org/thomasdavis.qr.png')
+  }
 });
 
 
