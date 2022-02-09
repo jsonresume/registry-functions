@@ -158,8 +158,9 @@ app.get("/repo/:username", async (req, res) => {
 app.get("/:username.:ext", async (req, res) => {
   const username = req.params.username;
   const parsedFormat = req.params.ext.split('.');
-  console.log(parsedFormat);
-  if (parsedFormat[1] === 'png') {
+  console.log('parsed', req.params.ext, parsedFormat);
+  console.log('shit', req.params.ext, parsedFormat);
+  if (parsedFormat[0] === 'png') {
     var code = qr.image('https://registry.jsonresume.org/' + username, { type: 'png', ec_level: 'M', size: 100, margin: 0, parse_url: true });
     res.setHeader('Content-type', 'image/png');
     code.pipe(res);
