@@ -161,7 +161,7 @@ app.get("/:username.:ext", async (req, res) => {
   console.log('parsed', req.params.ext, parsedFormat);
   console.log('shit', req.params.ext, parsedFormat);
   if (parsedFormat[0] === 'png') {
-  var code = qr.image('https://registry.jsonresume.org/' + username, { type: 'png', ec_level: 'M', size: 60, margin: 1, parse_url: true });
+  var code = qr.image('https://registry.jsonresume.org/' + username, { type: 'png', ec_level: 'S', size: 60, margin: 1});
     res.setHeader('Content-type', 'image/png');
     code.pipe(res);
   } else {
