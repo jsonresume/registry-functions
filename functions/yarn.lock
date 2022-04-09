@@ -1708,6 +1708,11 @@ cors@^2.8.5:
     object-assign "^4"
     vary "^1"
 
+country-code-lookup@0.0.20:
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/country-code-lookup/-/country-code-lookup-0.0.20.tgz#d04c71cd94de4bd44dab6822f637638ed3e55359"
+  integrity sha512-mcNlekdiVyiKO0lrjj3FrZ36vxlwjUwXTHpdRtVu9917SAYsHrlORmpHdPXeEXwTmw/yiKiTX4t6LC5uP5KVFg==
+
 create-error-class@^3.0.0:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/create-error-class/-/create-error-class-3.0.2.tgz#06be7abef947a3f14a30fd610671d401bca8b7b6"
@@ -1805,7 +1810,7 @@ date-and-time@^0.14.2:
   resolved "https://registry.yarnpkg.com/date-and-time/-/date-and-time-0.14.2.tgz#a4266c3dead460f6c231fe9674e585908dac354e"
   integrity sha512-EFTCh9zRSEpGPmJaexg7HTuzZHh6cnJj1ui7IGCFNXzd2QdpsNh05Db5TF3xzJm30YN+A8/6xHSuRcQqoc3kFA==
 
-date-fns@^2.14.0:
+date-fns@^2.14.0, date-fns@^2.28.0:
   version "2.28.0"
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.28.0.tgz#9570d656f5fc13143e50c975a3b6bbeb46cd08b2"
   integrity sha512-8d35hViGYx/QH0icHYCeLmsLmMUheMmTyV9Fcm6gvNwdw31yXXH+O85sOBJ+OLnLQMKZowvpKb6FgMIQjcpvQw==
@@ -1855,7 +1860,7 @@ debug@^3.1.0:
   dependencies:
     ms "^2.1.1"
 
-debuglog@*, debuglog@^1.0.1:
+debuglog@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/debuglog/-/debuglog-1.0.1.tgz#aa24ffb9ac3df9a2351837cfb2d279360cd78492"
   integrity sha1-qiT/uaw9+aI1GDfPstJ5NgzXhJI=
@@ -3307,7 +3312,7 @@ handlebars@1.x:
   optionalDependencies:
     uglify-js "~2.3"
 
-handlebars@>2.0.0, handlebars@>=4.0.0, handlebars@>=4.0.14, handlebars@>=4.5.3, handlebars@^4.0.10, handlebars@^4.0.11, handlebars@^4.0.12, handlebars@^4.0.5, handlebars@^4.1.2, handlebars@^4.3.0, handlebars@^4.5.1, handlebars@^4.5.3, handlebars@^4.7, handlebars@^4.7.3, handlebars@^4.7.6, handlebars@^4.7.7:
+handlebars@>2.0.0, handlebars@>=4.0.0, handlebars@>=4.0.14, handlebars@>=4.5.3, handlebars@^4.0.0, handlebars@^4.0.10, handlebars@^4.0.11, handlebars@^4.0.12, handlebars@^4.0.5, handlebars@^4.1.2, handlebars@^4.3.0, handlebars@^4.5.1, handlebars@^4.5.3, handlebars@^4.7, handlebars@^4.7.3, handlebars@^4.7.6, handlebars@^4.7.7:
   version "4.7.7"
   resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-4.7.7.tgz#9ce33416aad02dbd6c8fafa8240d5d98004945a1"
   integrity sha512-aAcXm5OAfE/8IXkcZvCepKU3VzW1/39Fb5ZuqMtgI/hT8X2YgoMvBY5dLhq/cpOvw7Lk1nK/UF71aLG/ZnVYRA==
@@ -3650,7 +3655,7 @@ import-lazy@^2.1.0:
   resolved "https://registry.yarnpkg.com/import-lazy/-/import-lazy-2.1.0.tgz#05698e3d45c88e8d7e9d92cb0584e77f096f3e43"
   integrity sha1-BWmOPUXIjo1+nZLLBYTnfwlvPkM=
 
-imurmurhash@*, imurmurhash@^0.1.4:
+imurmurhash@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/imurmurhash/-/imurmurhash-0.1.4.tgz#9218b9b2b928a238b13dc4fb6b6d576f231453ea"
   integrity sha1-khi5srkoojixPcT7a21XbyMUU+o=
@@ -4337,6 +4342,27 @@ jsonresume-theme-apage@^1.0.1:
   dependencies:
     handlebars "^4.3.0"
 
+jsonresume-theme-autumn@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/jsonresume-theme-autumn/-/jsonresume-theme-autumn-1.0.1.tgz#28e05a2e8bfc6082b58cdb0846ded21c4eb9ca17"
+  integrity sha512-1hQvYiplMIt9E5jldi4gG6xcXdZGKVas+pLMTCWGrtiuIOgeqWfd9cj5dnSj7p2AylTdVzglsprAKr3vqEbcrQ==
+  dependencies:
+    country-code-lookup "0.0.20"
+    date-fns "^2.28.0"
+    handlebars "^4.7.7"
+    handlebars-wax "^6.1.0"
+
+jsonresume-theme-caffeine@^1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/jsonresume-theme-caffeine/-/jsonresume-theme-caffeine-1.2.3.tgz#ef691f5b417f9760efa25d185972802584fa5939"
+  integrity sha1-72kfW0F/l2Dvol0YWXKAJYT6WTk=
+  dependencies:
+    address-format "0.0.3"
+    handlebars "^4.0.5"
+    handlebars-wax "^4.0.0"
+    moment "^2.17.1"
+    swag "^0.7.0"
+
 jsonresume-theme-class@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/jsonresume-theme-class/-/jsonresume-theme-class-0.1.2.tgz#df928f5937378db9bf39377338e99539f9fe6ec2"
@@ -4434,6 +4460,13 @@ jsonresume-theme-flat@^0.3.7:
   version "0.3.7"
   resolved "https://registry.yarnpkg.com/jsonresume-theme-flat/-/jsonresume-theme-flat-0.3.7.tgz#a264f00d6c5850dd7c4b5c15d64204d213a85552"
   integrity sha1-omTwDWxYUN18S1wV1kIE0hOoVVI=
+  dependencies:
+    handlebars "^2.0.0-alpha.4"
+
+jsonresume-theme-full@0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/jsonresume-theme-full/-/jsonresume-theme-full-0.0.4.tgz#2fe6fe591500551f967adcad3f3d428b3743bd91"
+  integrity sha512-C5Mr7Ttao9H9bff77Z8UT4XIYPnjHSjpQXZSMupOVXpqaQeOj+zdrh+KxRYE7J+JJUWrolFINaeNXyCN8+pZgg==
   dependencies:
     handlebars "^2.0.0-alpha.4"
 
@@ -4582,12 +4615,12 @@ jsonresume-theme-onepage@0.0.3:
     css "2.2.x"
     handlebars "^2.0.0-alpha.4"
 
-jsonresume-theme-onepageresume@0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/jsonresume-theme-onepageresume/-/jsonresume-theme-onepageresume-0.0.2.tgz#c9967e69748fa14d96567a8a8227660582db0bb6"
-  integrity sha1-yZZ+aXSPoU2WVnqKgidmBYLbC7Y=
+jsonresume-theme-onepageresume@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/jsonresume-theme-onepageresume/-/jsonresume-theme-onepageresume-0.0.3.tgz#15df3ffc0c148218f40f81ba2d944cae21bf3bc9"
+  integrity sha512-Lg9eDcY0H4KvODm2xGwuRO/WHF5AGAbFJj9Rlm7WTkh6TOxhAzz28cdPIGxtNhfuHMPut4YFb9UMbLxSzJMq+g==
   dependencies:
-    handlebars "^2.0.0-alpha.4"
+    handlebars "^4.0.0"
 
 jsonresume-theme-orbit@^1.0.3:
   version "1.0.3"
@@ -4682,6 +4715,14 @@ jsonresume-theme-stackoverflow@^1.4.0:
   dependencies:
     handlebars "^4.0.10"
     moment "^2.18.1"
+
+jsonresume-theme-standard-resume@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/jsonresume-theme-standard-resume/-/jsonresume-theme-standard-resume-1.3.0.tgz#8e20198832019b64650e7be18de1154c6136428e"
+  integrity sha512-bfoHcnytXoh4yoR/VMkcXNwED2gw0gW4JQ7LBZWBjEFuhOK/Q/qGFHoDOwMcYbuFriXIdPfDpJu8r2JvkXVsxA==
+  dependencies:
+    handlebars "^4.0.12"
+    helper-date "^1.0.1"
 
 jsonresume-theme-tachyons-clean@0.0.9:
   version "0.0.9"
@@ -5089,11 +5130,6 @@ lodash._basecopy@^3.0.0:
   resolved "https://registry.yarnpkg.com/lodash._basecopy/-/lodash._basecopy-3.0.1.tgz#8da0e6a876cf344c0ad8a54882111dd3c5c7ca36"
   integrity sha1-jaDmqHbPNEwK2KVIghEd08XHyjY=
 
-lodash._baseindexof@*:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/lodash._baseindexof/-/lodash._baseindexof-3.1.0.tgz#fe52b53a1c6761e42618d654e4a25789ed61822c"
-  integrity sha1-/lK1OhxnYeQmGNZU5KJXie1hgiw=
-
 lodash._basetostring@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/lodash._basetostring/-/lodash._basetostring-3.0.1.tgz#d1861d877f824a52f669832dcaf3ee15566a07d5"
@@ -5112,29 +5148,12 @@ lodash._basevalues@^3.0.0:
   resolved "https://registry.yarnpkg.com/lodash._basevalues/-/lodash._basevalues-3.0.0.tgz#5b775762802bde3d3297503e26300820fdf661b7"
   integrity sha1-W3dXYoAr3j0yl1A+JjAIIP32Ybc=
 
-lodash._bindcallback@*:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/lodash._bindcallback/-/lodash._bindcallback-3.0.1.tgz#e531c27644cf8b57a99e17ed95b35c748789392e"
-  integrity sha1-5THCdkTPi1epnhftlbNcdIeJOS4=
-
-lodash._cacheindexof@*:
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/lodash._cacheindexof/-/lodash._cacheindexof-3.0.2.tgz#3dc69ac82498d2ee5e3ce56091bafd2adc7bde92"
-  integrity sha1-PcaayCSY0u5ePOVgkbr9Ktx73pI=
-
-lodash._createcache@*:
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/lodash._createcache/-/lodash._createcache-3.1.2.tgz#56d6a064017625e79ebca6b8018e17440bdcf093"
-  integrity sha1-VtagZAF2JeeevKa4AY4XRAvc8JM=
-  dependencies:
-    lodash._getnative "^3.0.0"
-
 lodash._createset@~4.0.0:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/lodash._createset/-/lodash._createset-4.0.3.tgz#0f4659fbb09d75194fa9e2b88a6644d363c9fe26"
   integrity sha1-D0ZZ+7CddRlPqeK4imZE02PJ/iY=
 
-lodash._getnative@*, lodash._getnative@^3.0.0:
+lodash._getnative@^3.0.0:
   version "3.9.1"
   resolved "https://registry.yarnpkg.com/lodash._getnative/-/lodash._getnative-3.9.1.tgz#570bc7dede46d61cdcde687d65d3eecbaa3aaff5"
   integrity sha1-VwvH3t5G1hzc3mh9ZdPuy6o6r/U=
@@ -5260,7 +5279,7 @@ lodash.once@^4.0.0:
   resolved "https://registry.yarnpkg.com/lodash.once/-/lodash.once-4.1.1.tgz#0dd3971213c7c56df880977d504c88fb471a97ac"
   integrity sha1-DdOXEhPHxW34gJd9UEyI+0cal6w=
 
-lodash.restparam@*, lodash.restparam@^3.0.0:
+lodash.restparam@^3.0.0:
   version "3.6.1"
   resolved "https://registry.yarnpkg.com/lodash.restparam/-/lodash.restparam-3.6.1.tgz#936a4e309ef330a7645ed4145986c85ae5b20805"
   integrity sha1-k2pOMJ7zMKdkXtQUWYbIWuWyCAU=
@@ -5659,9 +5678,9 @@ mkdirp@^1.0.3:
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
 
 moment@>2.7.0, moment@>=2.24.0, moment@^2.13.0, moment@^2.17.1, moment@^2.18.1, moment@^2.19.1, moment@^2.22.2, moment@^2.24.0, moment@^2.27.0, moment@^2.29.1, moment@^2.8.1:
-  version "2.29.1"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
-  integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
+  version "2.29.2"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.2.tgz#00910c60b20843bcba52d37d58c628b47b1f20e4"
+  integrity sha512-UgzG4rvxYpN15jgCmVJwac49h9ly9NurikMWGPdVxm8GZD6XjkKPxDTjQQ43gtGgnV3X0cAyWDdP2Wexoquifg==
 
 move-concurrently@^1.0.1:
   version "1.0.1"
@@ -6864,6 +6883,11 @@ q@^1.1.2:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
   integrity sha1-fjL3W0E4EpHQRhHxvxQQmsAGUdc=
+
+qr-image@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/qr-image/-/qr-image-3.2.0.tgz#9fa8295beae50c4a149cf9f909a1db464a8672e8"
+  integrity sha1-n6gpW+rlDEoUnPn5CaHbRkqGcug=
 
 qrcode-terminal@^0.12.0:
   version "0.12.0"
