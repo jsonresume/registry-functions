@@ -8,11 +8,9 @@ const fs = require("fs");
 const qr = require("qr-image");
 const app = express();
 app.use(cors({ origin: true }));
-// Import Admin SDK
-var admin = require("firebase-admin");
+const admin = require("firebase-admin");
 
-const packages = JSON.parse(fs.readFileSync(__dirname + "/package.json"))
-  .dependencies;
+const packages = JSON.parse(fs.readFileSync(__dirname + "/package.json")).dependencies;
 
 const themes = _.filter(_.keys(packages), (p) => {
   return p.indexOf("theme") !== -1;
@@ -20,16 +18,34 @@ const themes = _.filter(_.keys(packages), (p) => {
 
 admin.initializeApp(functions.config().firebase);
 
-var db = admin.database();
+const db = admin.database();
 const dbs = admin.firestore();
 
 const makeTemplate = (message) => {
   const template = fs.readFileSync(__dirname + "/template.html", "utf8");
   return template.replace("{MESSAGE}", message);
 };
+
+/**
+ * First checks if the theme name exists as-is. If it doesn't exist, we fallback
+ * to legacy behavior, which is to append the name to `jsonresume-theme-`.
+ *
+ * @param {string} theme Package/module name of the theme to import.
+ * @returns
+ */
 const getTheme = (theme) => {
+  if (!themes.includes(theme)) {
+    theme = `jsonresume-theme-${theme}`;
+
+    if (!themes.includes(theme)) {
+      return {
+        error: "Theme is not supported, please visit → https://github.com/jsonresume/registry-functions/issues/7"
+      }
+    }
+  }
+
   try {
-    return require(__dirname + "/node_modules/jsonresume-theme-" + theme);
+    return require(__dirname + "/node_modules/" + theme);
   } catch (e) {
     return {
       e: e.toString(),
@@ -42,6 +58,7 @@ const getTheme = (theme) => {
 app.get("/themes", (req, res) => {
   res.send(themes);
 });
+
 app.get("/theme/:theme", (req, res) => {
   const resumeJson = JSON.parse(fs.readFileSync(__dirname + "/resume.json"));
   const theme = req.params.theme.toLowerCase();
@@ -52,9 +69,11 @@ app.get("/theme/:theme", (req, res) => {
   const resumeHTML = themeRenderer.render(resumeJson, {});
   res.send(resumeHTML);
 });
+
 app.get("/", (req, res) => {
   res.send("Visit jsonresume.org to learn more");
 });
+
 app.get("/all", (req, res) => {
   const resumesRef = dbs.collection("resumes");
   resumesRef
@@ -72,6 +91,7 @@ app.get("/all", (req, res) => {
       return [];
     });
 });
+
 app.post("/theme/:theme", (req, res) => {
   console.log("Rendering theme");
   const resumeJson = req.body.resume;
@@ -270,9 +290,6 @@ app.get("/:username", async (req, res) => {
     });
   });
 });
-
-
-
 
 app.listen(3000);
 exports.registry = functions.https.onRequest(app);
