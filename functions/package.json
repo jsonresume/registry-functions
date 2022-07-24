@@ -13,6 +13,7 @@
     "node": "12"
   },
   "dependencies": {
+    "@jsonresume/jsonresume-theme-class": "^0.2.1",
     "axios": "^0.21.1",
     "cors": "^2.8.5",
     "even": "^0.1.1",
@@ -24,7 +25,6 @@
     "jsonresume-theme-apage": "^1.0.1",
     "jsonresume-theme-autumn": "^1.0.1",
     "jsonresume-theme-caffeine": "^1.2.3",
-    "jsonresume-theme-class": "^0.1.2",
     "jsonresume-theme-classy": "^1.0.9",
     "jsonresume-theme-cora": "^0.1.1",
     "jsonresume-theme-dave": "^1.0.1",
