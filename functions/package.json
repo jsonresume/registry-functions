@@ -13,6 +13,7 @@
     "node": "12"
   },
   "dependencies": {
+    "@godraadam/jsonresume-theme-minyma": "0.0.1",
     "axios": "^0.21.1",
     "cors": "^2.8.5",
     "even": "^0.1.1",
