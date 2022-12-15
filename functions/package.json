@@ -16,7 +16,7 @@
     "axios": "^0.21.1",
     "cors": "^2.8.5",
     "even": "^0.1.1",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "firebase-admin": "~8.12.1",
     "firebase-functions": "^3.6.1",
     "jsonresume-theme-ace": "^1.1.0",
