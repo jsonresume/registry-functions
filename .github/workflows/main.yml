@@ -23,8 +23,8 @@ jobs:
     - uses: actions/setup-node@v2
       with:
         node-version: '12'
-    - name: Authenticate to Google Cloud
-      uses: google-github-actions/auth@v1
+    #- name: Authenticate to Google Cloud
+    #  uses: google-github-actions/auth@v1
 
     # Runs a set of commands using the runners shell
     - name: Attempting to install npm packages
