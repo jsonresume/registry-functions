@@ -11,8 +11,9 @@ app.use(cors({ origin: true }));
 // Import Admin SDK
 var admin = require("firebase-admin");
 
-const packages = JSON.parse(fs.readFileSync(__dirname + "/package.json"))
-  .dependencies;
+const packages = JSON.parse(
+  fs.readFileSync(__dirname + "/package.json")
+).dependencies;
 
 const themes = _.filter(_.keys(packages), (p) => {
   return p.indexOf("theme") !== -1;
@@ -156,16 +157,23 @@ app.get("/repo/:username", async (req, res) => {
 });
 
 app.get("/:username.:ext", async (req, res) => {
-  const username = req.params.username.split('.')[0]
-  const parsedFormat = req.params.ext.split('.');
-  console.log('parsed', req.params.ext, parsedFormat);
-  console.log('shit', req.params.ext, parsedFormat);
-  if (parsedFormat[0] === 'png') {
-  var code = qr.image('https://registry.jsonresume.org/' + username, { type: 'png', ec_level: 'S', size: 60, margin: 1});
-    res.setHeader('Content-type', 'image/png');
+  const username = req.params.username.split(".")[0];
+  const parsedFormat = req.params.ext.split(".");
+  console.log("parsed", req.params.ext, parsedFormat);
+  console.log("shit", req.params.ext, parsedFormat);
+  if (parsedFormat[0] === "png") {
+    var code = qr.image("https://registry.jsonresume.org/" + username, {
+      type: "png",
+      ec_level: "S",
+      size: 60,
+      margin: 1,
+    });
+    res.setHeader("Content-type", "image/png");
     code.pipe(res);
   } else {
-    res.send('Must be in the format of registry.jsonresume.org/thomasdavis.qr.png')
+    res.send(
+      "Must be in the format of registry.jsonresume.org/thomasdavis.qr.png"
+    );
   }
 });
 
@@ -271,8 +279,5 @@ app.get("/:username", async (req, res) => {
   });
 });
 
-
-
-
-app.listen(3000);
+// app.listen(3100);
 exports.registry = functions.https.onRequest(app);
