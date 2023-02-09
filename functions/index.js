@@ -173,7 +173,7 @@ app.get("/:username", async (req, res) => {
     // if (!resumeHTMLRes.data) {
     //   res.send("There was an error generatoring your resume");
     // }
-    // res.set("Cache-control", "public, max-age=60");
+    res.set("Cache-control", "public, max-age=90");
     res.send(resumeHTML);
   });
 });
