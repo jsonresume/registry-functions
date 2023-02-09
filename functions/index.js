@@ -111,7 +111,12 @@ app.get("/:username", async (req, res) => {
   let gistData = {};
   try {
     gistData = await axios.get(
-      `https://api.github.com/users/${req.params.username}/gists`
+      `https://api.github.com/users/${req.params.username}/gists`,
+      {
+        headers: {
+          Authorization: "Bearer " + process.env.GITHUB_TOKEN,
+        },
+      }
     );
   } catch (e) {
     return res.send(makeTemplate("This is not a valid Github username"));
